@@ -1,0 +1,36 @@
+networks:
+  auth-isolated:
+    name: auth-isolated
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: auth-postgres-isolated
+    environment:
+      POSTGRES_DB: arenacup
+      POSTGRES_USER: arenacup
+      POSTGRES_PASSWORD: arenacup
+    ports:
+      - "5434:5432"
+    networks:
+      - auth-isolated
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: arenacup/auth-service-local
+    container_name: auth-service-local
+    ports:
+      - "9998:9998"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: arenacup
+      POSTGRES_USER: arenacup
+      POSTGRES_PASSWORD: arenacup
+      EUREKA_CLIENT_ENABLED: "true"
+    depends_on:
+      - postgres
+    networks:
+      - auth-isolated
