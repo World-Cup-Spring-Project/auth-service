@@ -13,7 +13,7 @@ import java.util.Date;
 @Service
 public class JwtService {
     private static final String ISSUER = "arenacup-auth-service";
-    private static final long ACCESS_TOKEN_SECONDS = 60;
+    private static final long ACCESS_TOKEN_SECONDS = 86400;
     private static final String SECRET = "SEGREDO-12345";
     private static final Algorithm algorithm = Algorithm.HMAC256(SECRET);
     public String gerarAccessToken(Usuario usuario) {

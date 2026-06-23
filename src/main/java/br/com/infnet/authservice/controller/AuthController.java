@@ -2,9 +2,11 @@ package br.com.infnet.authservice.controller;
 
 import br.com.infnet.authservice.dto.LoginRequest;
 import br.com.infnet.authservice.dto.LoginResponse;
+import br.com.infnet.authservice.dto.RegisterRequest;
 import br.com.infnet.authservice.dto.UsuarioAutenticadoResponse;
 import br.com.infnet.authservice.service.AuthService;
 import br.com.infnet.authservice.service.JwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,13 @@ public class AuthController {
     public AuthController(AuthService authService, JwtService jwtService) {
         this.authService = authService;
         this.jwtService = jwtService;
+    }
+
+    // --- NOVA ROTA DE REGISTO ---
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+        authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Utilizador cadastrado com sucesso!");
     }
 
     @PostMapping("/login")
